@@ -30,8 +30,18 @@ public class TodoListController extends HttpServlet {
 		// TODO Auto-generated method stub
 		String subPath = req.getPathInfo();
 		
+		if(subPath.equals("/view")) {
+			String strSeq = req.getParameter("td_seq");
+			Integer td_seq = Integer.valueOf(strSeq);
+			TodoListVO tdVO = tdService.findBySeq(td_seq);
+			
+			req.setAttribute("TD", tdVO);
+			
+			req.getRequestDispatcher("/WEB-INF/views/view.jsp").forward(req, resp);
+			
+		}
 		
-		if(subPath.equals("/update")) {
+		else if(subPath.equals("/update")) {
 			
 			String strSeq = req.getParameter("td_seq");
 			Integer td_seq = Integer.valueOf(strSeq);
@@ -40,7 +50,7 @@ public class TodoListController extends HttpServlet {
 			
 			req.setAttribute("TD", tdVO);
 						
-			req.getRequestDispatcher("WEB-INF/views/update.jsp").forward(req, resp);
+			req.getRequestDispatcher("/WEB-INF/views/update.jsp").forward(req, resp);
 		}
 		
 	}
