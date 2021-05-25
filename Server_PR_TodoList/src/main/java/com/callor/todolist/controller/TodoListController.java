@@ -31,9 +31,16 @@ public class TodoListController extends HttpServlet {
 		String subPath = req.getPathInfo();
 		
 		
-		if(subPath.equals("/insert")) {
+		if(subPath.equals("/update")) {
+			
+			String strSeq = req.getParameter("td_seq");
+			Integer td_seq = Integer.valueOf(strSeq);
+			
+			TodoListVO tdVO = tdService.findBySeq(td_seq);
+			
+			req.setAttribute("TD", tdVO);
 						
-			req.getRequestDispatcher("WEB-INF/views/home.jsp");
+			req.getRequestDispatcher("WEB-INF/views/update.jsp").forward(req, resp);
 		}
 		
 	}
@@ -61,7 +68,19 @@ public class TodoListController extends HttpServlet {
 			resp.sendRedirect("/todo/");
 			
 
+		} else if(subPath.equals("/update")) {
+		
+			String strSeq = req.getParameter("td_seq");
+			Integer td_seq = Integer.valueOf(strSeq);
+			
+			tdVO.setTd_seq(td_seq);
+			tdService.update(tdVO);
+			
+			resp.sendRedirect("/todolist/");
 		}
+		
+		
+		
 	}
 	
 	

@@ -26,7 +26,7 @@ public class TodoListServiceImplV1 implements TodoListService {
 		ResultSet rSet = pStr.executeQuery();
 		while(rSet.next()) {
 			TodoListVO tdVO = new TodoListVO();
-			tdVO.setTd_seq(rSet.getString(DbInfo.td_seq));
+			tdVO.setTd_seq(rSet.getInt(DbInfo.td_seq));
 			tdVO.setTd_date(rSet.getString(DbInfo.td_date));
 			tdVO.setTd_time(rSet.getString(DbInfo.td_time));
 			tdVO.setTd_doit(rSet.getString(DbInfo.td_doit));
@@ -41,7 +41,7 @@ public class TodoListServiceImplV1 implements TodoListService {
 	@Override
 	public List<TodoListVO> selectAll() {
 		// TODO 전체 목록 조회
-		String sql = " SELECT * FROM view_전체리스트 ";
+		String sql = " SELECT * FROM tbl_todolist";
 		
 		PreparedStatement pStr = null;
 		try {
@@ -61,7 +61,24 @@ public class TodoListServiceImplV1 implements TodoListService {
 
 	@Override
 	public TodoListVO findBySeq(Integer seq) {
-		// TODO Auto-generated method stub
+		// TODO seq로 데이터 조회
+		String sql = " SELECT * FROM tbl_todolist ";
+		sql += " WHERE td_seq = ? ";
+		
+		PreparedStatement pStr = null;
+		try {
+			pStr = dbConn.prepareStatement(sql);
+			List<TodoListVO> tdList = this.select(pStr);
+			
+			if(tdList == null || tdList.size() > 0) {
+				
+				System.out.println(tdList.toString());
+				return tdList.get(0);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
@@ -100,12 +117,56 @@ public class TodoListServiceImplV1 implements TodoListService {
 	@Override
 	public Integer update(TodoListVO tdVO) {
 		// TODO 데이터 수정
+		String sql = " UPDATE tbl_todolist SET ";
+			sql += " td_doit = ? ";
+			sql += " td_date = ? ";
+			sql += " td_time = ? ";
+			sql += " WHERE td_seq = ? ";
+			
+			PreparedStatement pStr = null;
+			
+			try {
+				pStr = dbConn.prepareStatement(sql);
+				
+				pStr.setString(1, tdVO.getTd_doit());
+				pStr.setString(2, tdVO.getTd_date());
+				pStr.setString(3, tdVO.getTd_time());
+				
+				pStr.setInt(4, tdVO.getTd_seq());
+				
+				return pStr.executeUpdate();
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		return null;
 	}
 
 	@Override
-	public Integer delete(TodoListVO tdVO) {
+	public Integer delete(Integer seq) {
 		// TODO 데이터 삭제
+		String sql = " DELETE FROM tbl_todolist ";
+		sql += " WHERE td_seq = ? ";
+		
+		PreparedStatement pStr = null;
+		
+			try {
+				pStr = dbConn.prepareStatement(sql);
+				
+				Integer intSql = Integer.valueOf(sql);
+				
+				pStr.setInt(1, intSql);
+				
+				return pStr.executeUpdate();
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+				
+		
 		return null;
 	}
 

@@ -10,5 +10,5 @@ public interface TodoListService {
 	public TodoListVO findBySeq(Integer seq);
 	public Integer insert(TodoListVO tbVO);
 	public Integer update(TodoListVO tbVO);
-	public Integer delete(TodoListVO tbVO);
+	public Integer delete(Integer seq);
 }

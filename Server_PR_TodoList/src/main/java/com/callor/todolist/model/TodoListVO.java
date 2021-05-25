@@ -13,7 +13,7 @@ import lombok.ToString;
 @NoArgsConstructor
 public class TodoListVO {
 
-	private String td_seq;
+	private Integer td_seq;
 	private String td_doit;
 	private String td_date;
 	private String td_time;
